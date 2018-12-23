@@ -1,0 +1,324 @@
+Grammar
+
+    0 $accept: prog $end
+
+    1 prog: TOKEN_MAIN TOKEN_BRAC_O TOKEN_BRAC_C TOKEN_CURLY_BRAC_O stmts TOKEN_CURLY_BRAC_C
+
+    2 stmts: /* empty */
+    3      | stmt TOKEN_SEMICOLON stmts
+
+    4 stmt: TOKEN_INT TOKEN_VAR
+    5     | TOKEN_FLOAT TOKEN_VAR
+    6     | TOKEN_VAR TOKEN_EQL expr
+    7     | TOKEN_PRINTID TOKEN_VAR
+    8     | TOKEN_CURLY_BRAC_O stmts TOKEN_CURLY_BRAC_C
+
+    9 expr: expr TOKEN_SUB expr
+   10     | expr TOKEN_MUL expr
+   11     | TOKEN_VAR
+   12     | TOKEN_DIGIT
+   13     | TOKEN_NUM
+
+
+Terminals, with rules where they appear
+
+$end (0) 0
+error (256)
+TOKEN_SUB (258) 9
+TOKEN_MUL (259) 10
+TOKEN_EQL (260) 6
+TOKEN_PRINTID (261) 7
+TOKEN_SEMICOLON (262) 3
+TOKEN_MAIN (263) 1
+TOKEN_BRAC_O (264) 1
+TOKEN_BRAC_C (265) 1
+TOKEN_CURLY_BRAC_O (266) 1 8
+TOKEN_CURLY_BRAC_C (267) 1 8
+TOKEN_INT (268) 4
+TOKEN_FLOAT (269) 5
+TOKEN_NUM (270) 13
+TOKEN_DIGIT (271) 12
+TOKEN_VAR (272) 4 5 6 7 11
+
+
+Nonterminals, with rules where they appear
+
+$accept (18)
+    on left: 0
+prog (19)
+    on left: 1, on right: 0
+stmts (20)
+    on left: 2 3, on right: 1 3 8
+stmt (21)
+    on left: 4 5 6 7 8, on right: 3
+expr (22)
+    on left: 9 10 11 12 13, on right: 6 9 10
+
+
+state 0
+
+    0 $accept: . prog $end
+
+    TOKEN_MAIN  shift, and go to state 1
+
+    prog  go to state 2
+
+
+state 1
+
+    1 prog: TOKEN_MAIN . TOKEN_BRAC_O TOKEN_BRAC_C TOKEN_CURLY_BRAC_O stmts TOKEN_CURLY_BRAC_C
+
+    TOKEN_BRAC_O  shift, and go to state 3
+
+
+state 2
+
+    0 $accept: prog . $end
+
+    $end  shift, and go to state 4
+
+
+state 3
+
+    1 prog: TOKEN_MAIN TOKEN_BRAC_O . TOKEN_BRAC_C TOKEN_CURLY_BRAC_O stmts TOKEN_CURLY_BRAC_C
+
+    TOKEN_BRAC_C  shift, and go to state 5
+
+
+state 4
+
+    0 $accept: prog $end .
+
+    $default  accept
+
+
+state 5
+
+    1 prog: TOKEN_MAIN TOKEN_BRAC_O TOKEN_BRAC_C . TOKEN_CURLY_BRAC_O stmts TOKEN_CURLY_BRAC_C
+
+    TOKEN_CURLY_BRAC_O  shift, and go to state 6
+
+
+state 6
+
+    1 prog: TOKEN_MAIN TOKEN_BRAC_O TOKEN_BRAC_C TOKEN_CURLY_BRAC_O . stmts TOKEN_CURLY_BRAC_C
+
+    TOKEN_PRINTID       shift, and go to state 7
+    TOKEN_CURLY_BRAC_O  shift, and go to state 8
+    TOKEN_INT           shift, and go to state 9
+    TOKEN_FLOAT         shift, and go to state 10
+    TOKEN_VAR           shift, and go to state 11
+
+    $default  reduce using rule 2 (stmts)
+
+    stmts  go to state 12
+    stmt   go to state 13
+
+
+state 7
+
+    7 stmt: TOKEN_PRINTID . TOKEN_VAR
+
+    TOKEN_VAR  shift, and go to state 14
+
+
+state 8
+
+    8 stmt: TOKEN_CURLY_BRAC_O . stmts TOKEN_CURLY_BRAC_C
+
+    TOKEN_PRINTID       shift, and go to state 7
+    TOKEN_CURLY_BRAC_O  shift, and go to state 8
+    TOKEN_INT           shift, and go to state 9
+    TOKEN_FLOAT         shift, and go to state 10
+    TOKEN_VAR           shift, and go to state 11
+
+    $default  reduce using rule 2 (stmts)
+
+    stmts  go to state 15
+    stmt   go to state 13
+
+
+state 9
+
+    4 stmt: TOKEN_INT . TOKEN_VAR
+
+    TOKEN_VAR  shift, and go to state 16
+
+
+state 10
+
+    5 stmt: TOKEN_FLOAT . TOKEN_VAR
+
+    TOKEN_VAR  shift, and go to state 17
+
+
+state 11
+
+    6 stmt: TOKEN_VAR . TOKEN_EQL expr
+
+    TOKEN_EQL  shift, and go to state 18
+
+
+state 12
+
+    1 prog: TOKEN_MAIN TOKEN_BRAC_O TOKEN_BRAC_C TOKEN_CURLY_BRAC_O stmts . TOKEN_CURLY_BRAC_C
+
+    TOKEN_CURLY_BRAC_C  shift, and go to state 19
+
+
+state 13
+
+    3 stmts: stmt . TOKEN_SEMICOLON stmts
+
+    TOKEN_SEMICOLON  shift, and go to state 20
+
+
+state 14
+
+    7 stmt: TOKEN_PRINTID TOKEN_VAR .
+
+    $default  reduce using rule 7 (stmt)
+
+
+state 15
+
+    8 stmt: TOKEN_CURLY_BRAC_O stmts . TOKEN_CURLY_BRAC_C
+
+    TOKEN_CURLY_BRAC_C  shift, and go to state 21
+
+
+state 16
+
+    4 stmt: TOKEN_INT TOKEN_VAR .
+
+    $default  reduce using rule 4 (stmt)
+
+
+state 17
+
+    5 stmt: TOKEN_FLOAT TOKEN_VAR .
+
+    $default  reduce using rule 5 (stmt)
+
+
+state 18
+
+    6 stmt: TOKEN_VAR TOKEN_EQL . expr
+
+    TOKEN_NUM    shift, and go to state 22
+    TOKEN_DIGIT  shift, and go to state 23
+    TOKEN_VAR    shift, and go to state 24
+
+    expr  go to state 25
+
+
+state 19
+
+    1 prog: TOKEN_MAIN TOKEN_BRAC_O TOKEN_BRAC_C TOKEN_CURLY_BRAC_O stmts TOKEN_CURLY_BRAC_C .
+
+    $default  reduce using rule 1 (prog)
+
+
+state 20
+
+    3 stmts: stmt TOKEN_SEMICOLON . stmts
+
+    TOKEN_PRINTID       shift, and go to state 7
+    TOKEN_CURLY_BRAC_O  shift, and go to state 8
+    TOKEN_INT           shift, and go to state 9
+    TOKEN_FLOAT         shift, and go to state 10
+    TOKEN_VAR           shift, and go to state 11
+
+    $default  reduce using rule 2 (stmts)
+
+    stmts  go to state 26
+    stmt   go to state 13
+
+
+state 21
+
+    8 stmt: TOKEN_CURLY_BRAC_O stmts TOKEN_CURLY_BRAC_C .
+
+    $default  reduce using rule 8 (stmt)
+
+
+state 22
+
+   13 expr: TOKEN_NUM .
+
+    $default  reduce using rule 13 (expr)
+
+
+state 23
+
+   12 expr: TOKEN_DIGIT .
+
+    $default  reduce using rule 12 (expr)
+
+
+state 24
+
+   11 expr: TOKEN_VAR .
+
+    $default  reduce using rule 11 (expr)
+
+
+state 25
+
+    6 stmt: TOKEN_VAR TOKEN_EQL expr .
+    9 expr: expr . TOKEN_SUB expr
+   10     | expr . TOKEN_MUL expr
+
+    TOKEN_SUB  shift, and go to state 27
+    TOKEN_MUL  shift, and go to state 28
+
+    $default  reduce using rule 6 (stmt)
+
+
+state 26
+
+    3 stmts: stmt TOKEN_SEMICOLON stmts .
+
+    $default  reduce using rule 3 (stmts)
+
+
+state 27
+
+    9 expr: expr TOKEN_SUB . expr
+
+    TOKEN_NUM    shift, and go to state 22
+    TOKEN_DIGIT  shift, and go to state 23
+    TOKEN_VAR    shift, and go to state 24
+
+    expr  go to state 29
+
+
+state 28
+
+   10 expr: expr TOKEN_MUL . expr
+
+    TOKEN_NUM    shift, and go to state 22
+    TOKEN_DIGIT  shift, and go to state 23
+    TOKEN_VAR    shift, and go to state 24
+
+    expr  go to state 30
+
+
+state 29
+
+    9 expr: expr . TOKEN_SUB expr
+    9     | expr TOKEN_SUB expr .
+   10     | expr . TOKEN_MUL expr
+
+    TOKEN_MUL  shift, and go to state 28
+
+    $default  reduce using rule 9 (expr)
+
+
+state 30
+
+    9 expr: expr . TOKEN_SUB expr
+   10     | expr . TOKEN_MUL expr
+   10     | expr TOKEN_MUL expr .
+
+    $default  reduce using rule 10 (expr)
